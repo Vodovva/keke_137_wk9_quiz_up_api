@@ -1,24 +1,27 @@
 import axios from "axios"
-import APIResponse from "../types/api"
-import QuestionType from "../types/question"
-import UserType from "../types/auth"
+import {QuestionType, QuestionFormDataType, UserType} from "../types"
+// import UserType from "../types/auth"
 
+type APIResponse<T> = {
+    error? :string,
+    data?:T
+}
 
-const base: string = 'https://cae-bookstore.herokuapp.com'
-const questionEndpoint: string = '/question'
-const userEndpoint: string = '/user'
-const tokenEndpoint: string = '/token'
+const baseURL: string = 'https://cae-bookstore.herokuapp.com/';
+const userEndpoint: string = '/users';
+const tokenEndpoint: string = '/login';
+const questionEndpoint: string = '/question';
 
 
 const apiClientNoAuth = () => axios.create(
     {
-        baseURL: base
+        baseURL: baseURL
     }
 )
 
 const apiClientBasicAuth = (email:string, password:string) => axios.create(
     {
-        baseURL: base,
+        baseURL: baseURL,
         headers: {
             Authorization: 'Basic ' + btoa(`${email}:${password}`)
         }
@@ -27,7 +30,7 @@ const apiClientBasicAuth = (email:string, password:string) => axios.create(
 
 const apiClientTokenAuth = (token:string) => axios.create(
     {
-        baseURL: base,
+        baseURL: baseURL,
         headers: {
             Authorization: 'Bearer ' + token
         }
@@ -69,7 +72,7 @@ async function createNewUser(newUserData:UserType): Promise<APIResponse<UserType
 }
 
 
-async function login(email:string, password:string): Promise<APIResponse<{token:string}>> {
+async function login(email:string, password:string): Promise<APIResponse<UserType>> {
     let data;
     let error;
     try{
@@ -77,7 +80,7 @@ async function login(email:string, password:string): Promise<APIResponse<{token:
         data = response.data
     } catch(err) {
         if (axios.isAxiosError(err)){
-            error = err.response?.data.error
+            error = err.message
         } else {
             error = 'Something went wrong'
         }
@@ -102,7 +105,7 @@ async function getMe(token:string): Promise<APIResponse<UserType>> {
     return {data, error}
 }
 
-async function createQuestion(token:string, questionFormData: Partial<QuestionType>): Promise<APIResponse<QuestionType>> {
+async function createQuestion(token:string, questionFormData: QuestionFormDataType): Promise<APIResponse<{id:number}>> {
     let data;
     let error;
     try{

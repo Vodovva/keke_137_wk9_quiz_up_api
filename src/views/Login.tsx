@@ -15,7 +15,7 @@ type LoginProps = {
 export default function Login({ flashMessage, logUserIn }: LoginProps) {
     const navigate = useNavigate();
 
-    const [userFormData, setUserFormData] = useState<Partial<UserFormDataType>>({ username: '', password: ''})
+    const [userFormData, setUserFormData] = useState<Partial<UserFormDataType>>({ email: '', password: ''})
 
     const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         setUserFormData({...userFormData, [e.target.name]: e.target.value})
@@ -24,14 +24,15 @@ export default function Login({ flashMessage, logUserIn }: LoginProps) {
     const handleFormSubmit = async (e:React.FormEvent) => {
         e.preventDefault();
 
-        let response = await login(userFormData.username!, userFormData.password!)
+        let response = await login(userFormData.email!, userFormData.password!)
+        console.log(response)
         if (response.error){
             flashMessage(response.error, 'danger')
         } else {
             localStorage.setItem('token', response.data?.token as string)
-            localStorage.setItem('tokenExp', response.data?.tokenExpiration as string)
-            let userResponse = await getMe(response.data?.token as string)
-            logUserIn(userResponse.data!)
+            // localStorage.setItem('tokenExp', response.data?.tokenExpiration as string)
+            // let userResponse = await getMe(response.data?.token as string)
+            // logUserIn(userResponse.data!)
             flashMessage('You have successfully logged in', 'success')
             navigate('/')
         }
@@ -45,8 +46,8 @@ export default function Login({ flashMessage, logUserIn }: LoginProps) {
                 <Card.Body>
                     <Form onSubmit={handleFormSubmit}>
 
-                        <Form.Label>Username</Form.Label>
-                        <Form.Control name='username' placeholder='Enter Username' value={userFormData.username} onChange={handleInputChange}/>
+                        <Form.Label>Email</Form.Label>
+                        <Form.Control name='email' placeholder='Enter Email' value={userFormData.email} onChange={handleInputChange}/>
 
                         <Form.Label>Password</Form.Label>
                         <Form.Control name='password' type='password' placeholder='Enter Password' value={userFormData.password} onChange={handleInputChange}/>

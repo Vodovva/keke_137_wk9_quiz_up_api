@@ -20,7 +20,6 @@ export default function SignUp({ flashMessage }: SignUpProps) {
             firstName: '',
             lastName: '',
             email: '',
-            username: '',
             password: '',
             confirmPass: ''
         }
@@ -59,9 +58,6 @@ export default function SignUp({ flashMessage }: SignUpProps) {
 
                         <Form.Label>Email</Form.Label>
                         <Form.Control name='email' type='email' placeholder='Enter Email Address' value={userFormData.email} onChange={handleInputChange}/>
-
-                        <Form.Label>Username</Form.Label>
-                        <Form.Control name='username' placeholder='Enter Username' value={userFormData.username} onChange={handleInputChange}/>
 
                         <Form.Label>Password</Form.Label>
                         <Form.Control name='password' type='password' placeholder='Enter Password' value={userFormData.password} onChange={handleInputChange}/>
