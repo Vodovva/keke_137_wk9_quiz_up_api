@@ -43,8 +43,8 @@ export default function App() {
                 <Routes>
                     <Route path='/' element={<Home isLoggedIn={isLoggedIn} currentUser={loggedInUser} />} />
                     <Route path='/login' element={<Login flashMessage={flashMessage} logUserIn={logUserIn} />} />
-                    <Route path ='/quiz' element={<Quiz/>} />
                     <Route path='/signup' element={<SignUp flashMessage={flashMessage} />} />
+                    <Route path ='/quiz' element={<Quiz/>} />
                 </Routes>
             </Container>
         </div>
