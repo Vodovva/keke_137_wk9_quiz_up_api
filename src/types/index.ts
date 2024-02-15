@@ -1,21 +1,22 @@
 
 export type UserFormDataType = {
-    firstName:string,
-    lastName:string,
+    first_name:string,
+    last_name:string,
     email:string,
     password:string,
     confirmPass:string
 }
 
 export type UserType = {
-    admin:null,
+    admin:null
     created_on:string,
-    first_name:string,
-    last_name:string,
+    email: string,
+    first_name: string,
+    last_name: string,
+    password?: string,
     modified_on:string,
     token:string,
     user_id:number,
-    email:string
 }
 
 export type CategoryType = 'primary' | 'secondary' | 'success' | 'danger' | 'warning' | 'info' | 'light'

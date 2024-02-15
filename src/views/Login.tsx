@@ -1,27 +1,34 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import Button from 'react-bootstrap/Button';
 import Card from 'react-bootstrap/Card';
 import Form from 'react-bootstrap/Form';
-import { UserFormDataType, CategoryType, UserType } from '../types';
-import { login, getMe } from '../lib/apiWrapper';
+import { UserType, CategoryType} from '../types';
+import { login } from '../lib/apiWrapper';
 
 
 type LoginProps = {
     flashMessage: (newMessage:string|null, newCategory:CategoryType|null) => void,
     logUserIn: (user: UserType) => void
+    isLoggedIn: boolean
 }
 
-export default function Login({ flashMessage, logUserIn }: LoginProps) {
+export default function Login({ flashMessage, logUserIn, isLoggedIn }: LoginProps) {
     const navigate = useNavigate();
 
-    const [userFormData, setUserFormData] = useState<Partial<UserFormDataType>>({ email: '', password: ''})
+    useEffect(() => {
+        if (isLoggedIn){
+            navigate('/')
+        }
+    })
+
+    const [userFormData, setUserFormData] = useState<Partial<UserType>>({ email: '', password: ''})
 
     const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         setUserFormData({...userFormData, [e.target.name]: e.target.value})
     }
 
-    const handleFormSubmit = async (e:React.FormEvent) => {
+    const handleFormSubmit = async (e:React.FormEvent): Promise<void>  => {
         e.preventDefault();
 
         let response = await login(userFormData.email!, userFormData.password!)
@@ -30,10 +37,8 @@ export default function Login({ flashMessage, logUserIn }: LoginProps) {
             flashMessage(response.error, 'danger')
         } else {
             localStorage.setItem('token', response.data?.token as string)
-            // localStorage.setItem('tokenExp', response.data?.tokenExpiration as string)
-            // let userResponse = await getMe(response.data?.token as string)
-            // logUserIn(userResponse.data!)
             flashMessage('You have successfully logged in', 'success')
+            logUserIn(response.data!);
             navigate('/')
         }
     }

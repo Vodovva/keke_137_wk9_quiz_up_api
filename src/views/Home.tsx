@@ -37,7 +37,8 @@ export default function Home({ isLoggedIn, currentUser }: HomeProps) {
     return (
         <>
             <h1>{ isLoggedIn ? 'Welcome back ' + currentUser!.username : 'Hello and Welcome' }</h1>
-            <QuestionForm handleChange={handleInputChange} newQuestion={newQuestion} handleFormSubmit={handleFormSubmit} />
+            {isLoggedIn ? <QuestionForm handleChange={handleInputChange} newQuestion={newQuestion} handleFormSubmit={handleFormSubmit} />
+            :'Please Signup To Create A Question'}
             {/* { question.map( p =>  <QuestionCard question={p} key={p.id} /> ) } */}
         </>
     )

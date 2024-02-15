@@ -4,7 +4,7 @@ import Button from 'react-bootstrap/Button';
 import Card from 'react-bootstrap/Card';
 import Form from 'react-bootstrap/Form';
 import { UserFormDataType, CategoryType } from '../types';
-// import { register } from '../lib/apiWrapper';
+import { createNewUser } from '../lib/apiWrapper';
 
 
 type SignUpProps = {
@@ -17,8 +17,8 @@ export default function SignUp({ flashMessage }: SignUpProps) {
 
     const [userFormData, setUserFormData] = useState<UserFormDataType>(
         {
-            firstName: '',
-            lastName: '',
+            first_name: '',
+            last_name: '',
             email: '',
             password: '',
             confirmPass: ''
@@ -29,17 +29,16 @@ export default function SignUp({ flashMessage }: SignUpProps) {
         setUserFormData({...userFormData, [e.target.name]: e.target.value})
     }
 
-    const handleFormSubmit = async (e:React.FormEvent) => {
+    const handleFormSubmit = async (e:React.FormEvent): Promise<void> => {
         e.preventDefault();
 
-        // let response = await register(userFormData);
-        // if (response.error){
-        //     flashMessage(response.error, 'danger')
-        // } else {
-        //     let newUser = response.data
-        //     flashMessage(`Congrats ${newUser?.firstName} ${newUser?.lastName}, you have signed up with the username: ${newUser?.username}`, 'success');
-        //     navigate('/login');
-        // }
+        let response = await createNewUser(userFormData);
+        if (response.error){
+            flashMessage(response.error, 'danger')
+        } else {
+            flashMessage(`Congrats you have signed up with the username: ${userFormData?.email}`, 'success');
+            navigate('/login');
+        }
     }
 
     const disableSubmit = userFormData.password.length < 5 || userFormData.password !== userFormData.confirmPass
@@ -51,10 +50,10 @@ export default function SignUp({ flashMessage }: SignUpProps) {
                 <Card.Body>
                     <Form onSubmit={handleFormSubmit}>
                         <Form.Label>First Name</Form.Label>
-                        <Form.Control name='firstName' placeholder='Enter First Name' value={userFormData.firstName} onChange={handleInputChange}/>
+                        <Form.Control name='first_name' placeholder='Enter First Name' value={userFormData.first_name} onChange={handleInputChange}/>
 
                         <Form.Label>Last Name</Form.Label>
-                        <Form.Control name='lastName' placeholder='Enter Last Name' value={userFormData.lastName} onChange={handleInputChange}/>
+                        <Form.Control name='last_name' placeholder='Enter Last Name' value={userFormData.last_name} onChange={handleInputChange}/>
 
                         <Form.Label>Email</Form.Label>
                         <Form.Control name='email' type='email' placeholder='Enter Email Address' value={userFormData.email} onChange={handleInputChange}/>

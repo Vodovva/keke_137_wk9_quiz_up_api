@@ -8,6 +8,7 @@ import SignUp from './views/SignUp';
 import Quiz from './views/Quiz';
 import AlertMessage from './components/AlertMessage';
 import { CategoryType, UserType } from './types';
+import UserQuestions from './views/UserQuestion';
 
 export default function App() {
 
@@ -45,6 +46,7 @@ export default function App() {
                     <Route path='/login' element={<Login flashMessage={flashMessage} logUserIn={logUserIn} />} />
                     <Route path='/signup' element={<SignUp flashMessage={flashMessage} />} />
                     <Route path ='/quiz' element={<Quiz/>} />
+                    <Route path ='/userquestions' element={<UserQuestions/>} />
                 </Routes>
             </Container>
         </div>
