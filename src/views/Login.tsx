@@ -31,7 +31,7 @@ export default function Login({ flashMessage, logUserIn, isLoggedIn }: LoginProp
     const handleFormSubmit = async (e:React.FormEvent): Promise<void>  => {
         e.preventDefault();
 
-        let response = await login(userFormData.email!, userFormData.password!)
+        const response = await login(userFormData.email!, userFormData.password!)
         console.log(response)
         if (response.error){
             flashMessage(response.error, 'danger')

@@ -9,6 +9,7 @@ import Quiz from './views/Quiz';
 import AlertMessage from './components/AlertMessage';
 import { CategoryType, UserType } from './types';
 import UserQuestions from './views/UserQuestion';
+import EditQuestions from './views/EditQuestions';
 
 export default function App() {
 
@@ -43,10 +44,11 @@ export default function App() {
                 {message && <AlertMessage message={message} category={category} flashMessage={flashMessage} />}
                 <Routes>
                     <Route path='/' element={<Home isLoggedIn={isLoggedIn} currentUser={loggedInUser} />} />
-                    <Route path='/login' element={<Login flashMessage={flashMessage} logUserIn={logUserIn} />} />
+                    <Route path='/login' element={<Login flashMessage={flashMessage} logUserIn={logUserIn} isLoggedIn={isLoggedIn} />} />
                     <Route path='/signup' element={<SignUp flashMessage={flashMessage} />} />
                     <Route path ='/quiz' element={<Quiz/>} />
-                    <Route path ='/userquestions' element={<UserQuestions/>} />
+                    <Route path ='/userquestions' element={<UserQuestions currentUser={loggedInUser}/>} />
+                    <Route path ='/editquestions/:questionId' element={<EditQuestions currentUser={loggedInUser}/>}/>
                 </Routes>
             </Container>
         </div>

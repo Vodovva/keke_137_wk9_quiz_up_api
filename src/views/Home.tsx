@@ -7,7 +7,7 @@ import { createQuestion } from '../lib/apiWrapper';
 
 type HomeProps = {
     isLoggedIn:boolean,
-    ccurrentUser: UserType|null,
+    currentUser: UserType|null,
 }
 
 export default function Home({ isLoggedIn, currentUser }: HomeProps) {

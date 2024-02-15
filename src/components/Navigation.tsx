@@ -19,7 +19,6 @@ export default function Navigation({ isLoggedIn, handleClick }: NavigationProps)
                     <Nav className='me-auto'>
                         { isLoggedIn ? (
                             <>
-                                <Nav.Link href='/'>Create Post</Nav.Link>
                                 <Nav.Link as={Link} to='/' onClick={handleClick}>Log Out</Nav.Link>
                                 <Nav.Link as={Link} to='/quiz'>Quiz</Nav.Link>
                                 <Nav.Link as={Link} to='/userquestions'>My Questions</Nav.Link>
