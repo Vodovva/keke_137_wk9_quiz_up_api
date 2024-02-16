@@ -6,7 +6,8 @@ import InputGroup from 'react-bootstrap/InputGroup';
 import Card from 'react-bootstrap/Card';
 import QuestionType from '../types/question';
 import UserType from '../types/auth';
-import {useState} from 'react';
+import { useState } from 'react';
+import { useNavigate } from "react-router-dom";
 
 
 type Props = {
@@ -15,24 +16,31 @@ type Props = {
 }
 
 export default function Question({ question, currentUser }: Props) {
-    const [checkGuess, setCheckGuess] = useState(false) 
-    const [correctAnswer, setCorrectAnswer] = useState(false) 
-    const [guess, setGuess] = useState ('')
-    const handleChange = (e:React.ChangeEvent<HTMLInputElement>) => {
+    const [checkGuess, setCheckGuess] = useState(false)
+    const [correctAnswer, setCorrectAnswer] = useState(false)
+    const [guess, setGuess] = useState('')
+    const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         setGuess(e.target.value)
     }
 
-    const checkAnswer = ()=>{
+    const checkAnswer = () => {
         setCheckGuess(true)
-        if(question.answer === guess){
+        if (question.answer === guess) {
             console.log('Hurray Crushed It!')
             setCorrectAnswer(true)
-        }else{
+        } else {
             console.log('What a dum dum')
             setCorrectAnswer(false)
         }
     }
 
+    const navigate = useNavigate();
+    const routeChange = () => {
+        const path = `/editquestions`;
+        navigate(path);
+    }
+
+    console.log(currentUser?.first_name + ' ' + currentUser?.last_name + '_' + String(currentUser?.user_id).padStart(4, '0'))
 
     return (
         <Card className='my-3'>
@@ -44,23 +52,25 @@ export default function Question({ question, currentUser }: Props) {
                         placeholder="Answer"
                         aria-label="Answer"
                         aria-describedby="basic-addon2"
-                        onChange = {handleChange} 
-                        value = {guess}
+                        onChange={handleChange}
+                        value={guess}
                     />
-                    <Button variant="secondary" id="button-addon2" onClick = {checkAnswer}>
+                    <Button variant="secondary" id="button-addon2" onClick={checkAnswer}>
                         Check Answer
                     </Button>
                 </InputGroup>
 
-                {checkGuess ? correctAnswer ? <h4>You are corrcet!</h4> : <h4>You are incorrect.</h4> : null}
+                {checkGuess ? correctAnswer ? <h4>You are correct!</h4> : <h4>You are incorrect.</h4> : null}
                 {/* <Card.Text>{ question.answer }</Card.Text> */}
                 <Card.Subtitle>Posted at {question.created_on} by {question.author}</Card.Subtitle>
-                {question.userId === currentUser?.id && (
-                    <Link to={`/questions/${question.id}`}>
-                        {/* <Button variant='light' className='mt-3'>Edit Question</Button> */}
+                {question.author === currentUser?.first_name + ' ' + currentUser?.last_name + '_' + String(currentUser?.user_id).padStart(4, '0') && (
+                    <Link to={`/editquestions/${question.id}`}>
+                        <Button variant='light' className='mt-3' onClick={routeChange}>Edit Question</Button>
                     </Link>
                 )}
             </Card.Body>
         </Card>
     )
 }
+
+// questions/${question.id}

@@ -55,11 +55,11 @@ async function getAllQuestions(): Promise<APIResponse<QuestionType[]>> {
 }
 
 
-async function getMyQuestions(): Promise<APIResponse<QuestionType[]>>{
+async function getMyQuestions(token:string): Promise<APIResponse<QuestionType[]>>{
     let data;
     let error;
     try{
-        const response = await apiClientNoAuth().get(questionEndpoint + '/question');
+        const response = await apiClientTokenAuth(token).get(questionEndpoint);
         data = response.data.questions
     } catch(err) {
         if (axios.isAxiosError(err)){
@@ -156,12 +156,12 @@ async function getQuestion(questionId:string): Promise<APIResponse<QuestionType>
 }
 
 
-async function editQuestion(token:string, questionId:string, editedQuestionData:QuestionType): Promise<APIResponse<QuestionType>> {
+async function editQuestion(token:string, questionId:number, editedQuestionData:Partial<QuestionType>): Promise<APIResponse<string>> {
     let data;
     let error;
     try{
         const response = await apiClientTokenAuth(token).put(questionEndpoint + '/' + questionId, editedQuestionData);
-        data = response.data;
+        data = response.statusText
     } catch(err) {
         if (axios.isAxiosError(err)){
             error = err.response?.data.error

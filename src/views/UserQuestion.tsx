@@ -1,20 +1,22 @@
 import {useState, useEffect} from 'react'
 import {getMyQuestions} from '../lib/apiWrapper'
 import Question from '../components/Questions'
+import { QuestionType, UserType } from '../types'
 
 
 
-type UserQuestionsProps = {}
+type UserQuestionsProps = {currentUser:UserType | null}
 
-export default function UserQuestions({ }: Props) {
-    const [questions, setQuestions] = useState([])
+export default function UserQuestions({currentUser}: UserQuestionsProps) {
+    const [questions, setQuestions] = useState<QuestionType[]>([])
 
     useEffect( () => {
         async function fetchData(){
-            const response = await getMyQuestions();
+            const token = localStorage.getItem('token') || ''
+            const response = await getMyQuestions(token);
             console.log(response);
             if (response.data){
-                let questions = response.data;
+                const questions = response.data;
                 setQuestions(questions)
             }
         }
@@ -23,6 +25,6 @@ export default function UserQuestions({ }: Props) {
     }, [] )
 
     return (
-        <div>{questions.map(q => <Question key={q.id} question = {q} />)}</div>
+        <div>{questions.map(q => <Question key={q.id} question = {q} currentUser={currentUser} />)}</div>
     )
 }
